@@ -3,13 +3,11 @@ const fs = require('fs/promises');
 const path = require('path');
 
 (async () => {
-  if (process.argv.length < 4) {
-    console.error();
-
-    return;
-  }
-
   try {
+    if (process.argv.length < 4) {
+      throw new Error('too few params');
+    }
+
     const [filePath, destination] = process.argv.slice(2);
     const fileName = path.basename(filePath);
     let newFilePath = destination;
@@ -22,7 +20,7 @@ const path = require('path');
       .catch(() => false);
 
     if (destination.endsWith(path.sep) && !isDir) {
-      throw new Error();
+      throw new Error(`directory ${destination} does not exists`);
     }
 
     if (isDir) {
